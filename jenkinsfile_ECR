@@ -29,8 +29,7 @@ pipeline {
                     url: "https://github.com/lahiruUD/mrdevops_java_app.git"
                 )
             }
-        }    
-/*         
+        }            
         stage('Unit Test maven') {
             when { expression { params.action == 'create'}}
             steps {
@@ -113,8 +112,9 @@ pipeline {
                 }
             }
         } 
-*/
-        stage('Create EKS Cluster : Terraform'){
+
+/*         
+stage('Create EKS Cluster : Terraform'){
             when { expression {  params.action == 'create' } }
             steps{
                 script{
@@ -130,5 +130,6 @@ pipeline {
                 }
             }
         }
+*/
     }
 }    
