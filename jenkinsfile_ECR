@@ -114,7 +114,7 @@ pipeline {
             }
         } 
        
-stage('Create EKS Cluster : Terraform'){
+        stage('Create EKS Cluster : Terraform'){
             when { expression {  params.action == 'create' } }
             steps{
                 script{
@@ -143,8 +143,30 @@ stage('Create EKS Cluster : Terraform'){
                         aws configure set region ${params.Region}
                         aws eks --region ${params.Region} update-kubeconfig --name ${params.cluster}	
                     """
-                  }
                 }
             }
+        }
+        stage('Deployment on EKS Cluster'){
+            when { expression {  params.action == 'create' } }
+            steps{
+                script{
+                   def apply = false
+
+                   try{
+                    input message: 'please confirm to deploy on eks', ok: 'Ready to apply the config ?'
+                    apply = true
+                  }catch(err){
+                    apply= false
+                    currentBuild.result  = 'UNSTABLE'
+                  }
+                  if(apply){
+
+                    sh """
+                      kubectl apply -f .
+                    """
+                   }
+                }
+            }
+        }
     }
 }    
