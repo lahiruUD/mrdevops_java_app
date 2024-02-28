@@ -113,9 +113,7 @@ pipeline {
                 }
             }
         } 
-
- */
-         
+       
 stage('Create EKS Cluster : Terraform'){
             when { expression {  params.action == 'create' } }
             steps{
@@ -132,6 +130,9 @@ stage('Create EKS Cluster : Terraform'){
                 }
             }
         }
+
+*/
+
         stage('Connect to EKS'){
             when { expression {  params.action == 'create' } }
             steps{
