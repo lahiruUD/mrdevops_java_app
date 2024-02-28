@@ -132,5 +132,18 @@ stage('Create EKS Cluster : Terraform'){
                 }
             }
         }
+        stage('Connect to EKS'){
+            when { expression {  params.action == 'create' } }
+            steps{
+                script{
+                    sh """ 
+                        aws configure set aws_access_key_id $ACCESS_KEY
+                        aws configure set secret_access_key $ACCESS_KEY
+                        aws configure set region ${params.Region}
+                        aws eks --region ${params.Region} update-kubeconfig --name cluster_name $${params.cluster}	
+                    """
+                  }
+                }
+            }
     }
 }    
