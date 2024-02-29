@@ -170,7 +170,7 @@ pipeline {
         }
 */        
 
-        stage('Docker Image Cleanup: ECR') {
+        stage('Kubernetes Depoly') {
             when { expression { params.action == 'create'}}
             steps {
                 script {
