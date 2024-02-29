@@ -131,7 +131,7 @@ pipeline {
             }
         }
 
-*/
+
 
         stage('Connect to EKS'){
             when { expression {  params.action == 'create' } }
@@ -168,5 +168,20 @@ pipeline {
                 }
             }
         }
+*/        
+
+        stage('Docker Image Cleanup: ECR') {
+            when { expression { params.action == 'create'}}
+            steps {
+                script {
+                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8-token', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://172.31.57.162:6443') {
+                        sh "kubectl apply -f deployment.yml -n webapps"
+                        sh "kubectl get svc -n webapps"
+                }
+                
+                }
+            }
+        }
+
     }
 }    
